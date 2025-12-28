@@ -1,0 +1,29 @@
+# IDEs
+.vscode/
+
+# ============ backend directory ==============
+# Virtual Environment
+backend/.venv
+backend/venv
+backend/env
+backend/*.env
+backend/.env
+
+# Python cache
+backend/__pycache__/
+backend/*.pyc
+backend/*.pyo
+backend/*.pyd
+
+# Testing
+backend/.pytest_cache/
+backend/htmlcov/
+
+# Build artifacts
+backend/build/
+backend/dist/
+
+# schema
+backend/docs/supabase_schema.sql
+
+# ============ frontend directory ==============

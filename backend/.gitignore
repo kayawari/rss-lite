@@ -1,0 +1,27 @@
+# Virtual Environment
+.venv
+venv
+env
+*.env
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDEs
+.idea/
+.vscode/
+
+# Testing
+.pytest_cache/
+htmlcov/
+
+# Build artifacts
+build/
+dist/
+
+# schema
+docs/supabase_schema.sql

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Folo-Lite</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body, html { height: 100%; display: grid; place-items: center; background-color: #f8f9fa; }
+        .login-card { padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <main class="login-card">
+        <h1>Folo-Lite</h1>
+        <p>Your minimalist RSS reader.</p>
+        
+        <button id="google-login" class="contrast">
+            Sign in with Google
+        </button>
+        <div id="error-msg" style="color: red; margin-top: 1rem;"></div>
+    </main>
+
+    <script>
+        const supabaseUrl = "{{ supabase_url }}";
+        const supabaseKey = "{{ supabase_publishable_key }}";
+        const sb = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        document.getElementById('google-login').addEventListener('click', async () => {
+            const { data, error } = await sb.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.origin + "/login" // Redirect back here to process token
+                }
+            });
+            if (error) document.getElementById('error-msg').innerText = error.message;
+        });
+
+        // Check if we returned from Google with a session
+        sb.auth.onAuthStateChange(async (event, session) => {
+            if (event === 'SIGNED_IN' && session) {
+                // Send token to backend to set cookie
+                const resp = await fetch('/auth/session', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ access_token: session.access_token })
+                });
+
+                if (resp.ok) {
+                    window.location.href = "/";
+                }
+            }
+        });
+    </script>
+</body>
+</html>
