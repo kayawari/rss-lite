@@ -25,3 +25,6 @@ dist/
 
 # schema
 docs/supabase_schema.sql
+
+# gemini
+.gemini/
